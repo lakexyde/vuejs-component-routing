@@ -69,18 +69,18 @@
 			methods: {
 				pop: function(event) {	
 					this.pages.pop(); //removes the last component on trhe list
-					var count = this.pages.length -1;
-					this.inView = this.pages[count]
+					var count = this.pages.length -1; //get the last component on the list
+					this.inView = this.pages[count]// sets the last component as the component in view
 					
 				},
 				push: function(ref){
-					var view = ref;	
-					this.pages.push(view);
-					var count = this.pages.length-1;
-					this.inView = this.pages[count];
+					var view = ref;	//gets the argument passed by the component
+					this.pages.push(view); //adds the component to the list of components
+					var count = this.pages.length-1; // gets the last component on the list
+					this.inView = this.pages[count]; //sets the last component as the component in View
 				}
 			},
-			components: {
+			components: { //register all components
 				Foo,
 				Bar
 			}
