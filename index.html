@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>VueJS component routing</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+
+	<div id="app">
+		<keep-alive>
+			<transition mode="out-in">
+				<component :is="inView" v-on:pop='pop' v-on:push='push'></component>
+			</transition>
+            
+
+         </keep-alive>
+	</div>
+	
+
+
+	<template id="foo-template">
+		<div>
+			<h1>Foo component</h1>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque odit facere consectetur perspiciatis hic quos quasi, itaque qui quae totam iure blanditiis non, assumenda nemo ex. Ex totam laboriosam perspiciatis.</p>
+			<button @click="$push('bar')">Go to Bar</button>
+		</div>
+	</template>
+
+	<template id="bar-template">
+		<div>
+			<h1>Bar component</h1>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque odit facere consectetur perspiciatis hic quos quasi, itaque qui quae totam iure blanditiis non, assumenda nemo ex. Ex totam laboriosam perspiciatis.</p>
+			<button @click="$pop(event)">Back to Foo</button>
+		</div>
+	</template>
+
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script>
+		/*Register global push and pop functions*/
+		Vue.prototype.$pop = function(option){
+	 		this.$emit('pop', option)
+		}
+		Vue.prototype.$push = function(option){
+	 		this.$emit('push', option)
+		}
+
+		/*Declare components*/
+		const Foo = {
+			template: '#foo-template'
+
+		}
+		const Bar = {
+			template: '#bar-template'
+	
+		}
+
+		/*App entry point*/
+		const app = new Vue({
+			el: '#app',
+			data: {
+				pages: ['foo'],//Sets Foo component as the main component
+				inView: '' //current component to show
+			},
+			created:  function() {
+				this.inView = this.pages[this.pages.length - 1] //sets the last component as the component to view
+			},
+			methods: {
+				pop: function(event) {	
+					this.pages.pop(); //removes the last component on trhe list
+					var count = this.pages.length -1;
+					this.inView = this.pages[count]
+					
+				},
+				push: function(ref){
+					var view = ref;	
+					this.pages.push(view);
+					var count = this.pages.length-1;
+					this.inView = this.pages[count];
+				}
+			},
+			components: {
+				Foo,
+				Bar
+			}
+
+		})
+
+
+	</script>
+</body>
+</html>
